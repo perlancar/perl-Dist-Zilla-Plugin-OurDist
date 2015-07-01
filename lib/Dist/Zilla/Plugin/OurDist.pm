@@ -51,8 +51,8 @@ sub munge_file {
                  /
                      "${1}our \$DIST = '$dist'; $2"/emx and $munged_dist++;
 
-    if ($munged_date) {
-        $self->log_debug([ 'adding $DIST assignment to %s', $file->name ]);
+    if ($munged_dist) {
+        $self->log_debug(['adding $DIST assignment to %s', $file->name]);
         $file->content($content);
     }
 }
