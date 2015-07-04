@@ -33,6 +33,8 @@ sub munge_file {
 
     my $dist = $self->zilla->name;
 
+    my $end_pos = $content =~ /^(__DATA__|__END__)$/m ? $-[0] : undef;
+
     my $munged_dist = 0;
     $content =~ s/
                      ^
@@ -49,7 +51,17 @@ sub munge_file {
                      )
                      $                 # until the EOL}xm
                  /
-                     "${1}our \$DIST = '$dist'; $2"/emx and $munged_dist++;
+
+                     !defined($end_pos) || $-[0] < $end_pos ?
+
+                     "${1}our \$DIST = '$dist'; $2"
+
+                     :
+
+                     $&
+
+
+                     /emx and $munged_dist++;
 
     if ($munged_dist) {
         $self->log_debug(['adding $DIST assignment to %s', $file->name]);
@@ -84,6 +96,8 @@ This module is like L<Dist::Zilla::Plugin::PkgDist> except that it looks for
 comments C<# DIST> and put the C<$DIST> assignment there instead of adding
 another line. The principle is the same as in L<Dist::Zilla::Plugin::OurVersion>
 (instead of L<Dist::Zilla::Plugin::PkgVersion>).
+
+Comment/directive below C<__DATA__> or C<__END__> will not be replaced.
 
 
 =head1 SEE ALSO
