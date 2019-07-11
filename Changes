@@ -1,8 +1,8 @@
-0.02    2015-07-04 (PERLANCAR)
+0.02    2015-07-04  Released-By: PERLANCAR
 
 	- Don't replace #DIST below __DATA__ or __END__.
 
 
-0.01     2015-07-01 (PERLANCAR)
+0.01     2015-07-01  Released-By: PERLANCAR
 
          - First release.
